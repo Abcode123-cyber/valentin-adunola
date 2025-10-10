@@ -6,7 +6,6 @@
     <title>A Star is Born Today ✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* Base Setup */
         :root {
             --pink-light: #ff6e7f;
             --pink-dark: #bfe9ff;
@@ -19,39 +18,38 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             font-family: 'Poppins', sans-serif;
             color: var(--text-color);
             overflow-x: hidden;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
         }
 
-        /* Initial Gatekeeper/Click-to-Play Screen */
+        /* Gatekeeper Screen */
         #gatekeeper {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 100vh;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             z-index: 9999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+            transition: opacity 1s ease-out;
             text-align: center;
         }
 
         #gatekeeper h2 {
             font-family: 'Dancing Script', cursive;
-            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-size: clamp(2rem, 5vw, 3.5rem);
             color: #fff;
             margin-bottom: 30px;
             animation: pulse 2s ease-in-out infinite;
@@ -59,13 +57,12 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.9; }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         #gatekeeper.hidden {
             opacity: 0;
-            transform: scale(1.5);
             pointer-events: none;
         }
         
@@ -93,7 +90,7 @@
             50% { transform: translateY(-10px); }
         }
 
-        /* Magical Background Elements (Stars) */
+        /* Stars Background */
         .stars {
             position: fixed; 
             width: 100%;
@@ -115,142 +112,48 @@
             to { opacity: 1; transform: scale(1.1); }
         }
 
-        /* Content Wrapper for Main Message */
-        .content-wrapper {
-            min-height: 100vh; 
+        /* Main Container */
+        .main-container {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Full Screen Sections */
+        .section {
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100%;
-            z-index: 10;
-            padding: 50px 20px;
-        }
-        
-        /* Content Area */
-        .content {
-            text-align: center;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 25px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            max-width: 650px;
-            margin: 50px auto;
-            opacity: 0; 
-            transform: scale(0.8) translateY(50px);
-            transition: opacity 2s ease-in, transform 2s ease-in;
-        }
-        
-        .content.visible {
-            opacity: 1;
-            transform: scale(1) translateY(0);
+            padding: 40px 20px;
         }
 
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            color: var(--pink-light);
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-            margin-bottom: 30px;
-            opacity: 0;
-            transform: translateY(-30px) scale(0.9);
-            transition: all 1.5s ease-out;
-        }
-        
-        h1.fade-in {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .message {
-            font-size: 1.3rem;
-            line-height: 2rem;
-            margin: 20px 0;
-            font-weight: 300;
-            opacity: 0;
-            transform: translateX(-30px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
-        }
-
-        .message.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .btn {
-            margin-top: 40px;
-            background: linear-gradient(135deg, var(--pink-light) 0%, #ffb5c3 100%);
-            color: #fff;
-            border: none;
-            padding: 18px 40px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            font-weight: 600;
-            transition: all 0.4s;
-            box-shadow: 0 6px 20px rgba(255, 110, 127, 0.4);
+        /* Individual Media Card Section */
+        .media-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             opacity: 0;
             transform: scale(0.8);
+            transition: opacity 1.5s ease, transform 1.5s ease;
         }
 
-        .btn:hover {
-            background: linear-gradient(135deg, #ffb5c3 0%, var(--pink-light) 100%);
-            transform: scale(1.08);
-            box-shadow: 0 10px 30px rgba(255, 110, 127, 0.6);
-        }
-        
-        .btn.fade-in {
+        .media-section.visible {
             opacity: 1;
             transform: scale(1);
-            transition: opacity 1s ease-out, transform 1s ease-out;
         }
 
-        .highlight {
-            font-weight: 600;
-            color: var(--pink-dark);
-            text-shadow: 0 0 8px rgba(191, 233, 255, 0.6);
-        }
-
-        /* Photo/Video Section Styles */
-        #photo-section {
-            width: 100%;
-            min-height: 100vh;
-            padding: 80px 20px;
-            text-align: center;
-            opacity: 0;
-            transition: opacity 2s ease-in;
-            z-index: 5;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        #photo-section.visible {
-            opacity: 1;
-        }
-        
-        .media-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            max-width: 1200px;
-        }
-        
         .media-card {
-            width: 320px;
-            height: 240px;
+            width: 90%;
+            max-width: 600px;
+            height: 450px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+            border-radius: 25px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+            border: 4px solid rgba(255, 255, 255, 0.3);
             transform: scale(0) rotate(180deg);
             opacity: 0;
-            transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            position: relative;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
         
         .media-card.animate-in {
@@ -258,59 +161,88 @@
             transform: scale(1) rotate(0deg);
         }
         
-        .media-card:hover {
-            transform: scale(1.05) rotate(2deg);
-            box-shadow: 0 15px 40px rgba(255, 110, 127, 0.6);
-        }
-        
         .media-card img,
         .media-card video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s;
         }
-        
-        .media-card:hover img,
-        .media-card:hover video {
-            transform: scale(1.1);
+
+        /* Message Sections */
+        .message-section {
+            text-align: center;
+            max-width: 700px;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 40px rgba(31, 38, 135, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1.5s ease, transform 1.5s ease;
         }
-        
-        .media-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
+
+        .message-section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
-        
-        .media-card:hover::before {
-            left: 100%;
+
+        .message-section h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--pink-light);
+            text-shadow: 0 0 20px rgba(255, 110, 127, 0.6);
+            margin-bottom: 30px;
         }
-        
+
+        .message-section p {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            line-height: 2rem;
+            margin: 25px 0;
+            font-weight: 300;
+        }
+
+        .highlight {
+            font-weight: 600;
+            color: var(--pink-dark);
+            text-shadow: 0 0 10px rgba(191, 233, 255, 0.8);
+        }
+
+        .btn {
+            margin-top: 40px;
+            background: linear-gradient(135deg, var(--pink-light) 0%, #ffb5c3 100%);
+            color: #fff;
+            border: none;
+            padding: 18px 45px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.4s;
+            box-shadow: 0 6px 20px rgba(255, 110, 127, 0.4);
+        }
+
+        .btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 10px 30px rgba(255, 110, 127, 0.6);
+        }
+
         audio {
             display: none;
         }
 
-        /* Responsive Design */
+        /* Responsive */
         @media (max-width: 768px) {
             .media-card {
-                width: 280px;
-                height: 210px;
+                height: 350px;
             }
 
-            .content {
-                padding: 30px 20px;
+            .message-section {
+                padding: 40px 25px;
             }
 
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .message {
+            .message-section p {
                 font-size: 1.1rem;
                 line-height: 1.8rem;
             }
@@ -318,200 +250,141 @@
     </style>
 </head>
 <body>
-    <!-- Gatekeeper Screen -->
+    <!-- Gatekeeper -->
     <div id="gatekeeper">
         <h2>Tap to Unveil the Magic! ✨</h2>
-        <button id="startBtn">Start the Surprise 💖</button>
+        <button id="startBtn">▶ Play 💖</button>
     </div>
 
-    <!-- Animated Stars Background -->
+    <!-- Stars -->
     <div class="stars"></div>
 
-    <!-- Photo/Video Section (Appears First) -->
-    <div id="photo-section">
-        <div class="media-grid" id="mediaGrid">
-            <div class="media-card" data-url="kitan1.jpg">
+    <!-- Main Container -->
+    <div class="main-container" id="mainContainer">
+        <!-- Media Sections (One per screen) -->
+        <div class="section media-section" data-index="0">
+            <div class="media-card">
                 <img src="kitan1.jpg" alt="Beautiful Moment 1">
             </div>
-            <div class="media-card" data-url="kitan2.jpg">
-                <img src="kitan2.jpg" alt="Beautiful Moment 1">
+        </div>
+
+        <div class="section media-section" data-index="1">
+            <div class="media-card">
+                <img src="kitan2.jpg" alt="Beautiful Moment 2">
             </div>
-            <div class="media-card" data-url="kitan3.jpg">
-                <img src="kitan3.jpg" alt="Beautiful Moment 1">
+        </div>
+
+        <div class="section media-section" data-index="2">
+            <div class="media-card">
+                <img src="kitan3.jpg" alt="Beautiful Moment 3">
             </div>
-            <div class="media-card" data-url="kitan6.mp4">
-                <video loop muted playsinline>
+        </div>
+
+        <div class="section media-section" data-index="3">
+            <div class="media-card">
+                <img src="kitan4.jpg" alt="Beautiful Moment 4">
+            </div>
+        </div>
+
+        <div class="section media-section" data-index="4">
+            <div class="media-card">
+                <video loop muted playsinline autoplay>
                     <source src="kitan6.mp4" type="video/mp4">
                 </video>
             </div>
-            <div class="media-card" data-url="kitan7.mp4">
-                <video loop muted playsinline>
+        </div>
+
+        <div class="section media-section" data-index="5">
+            <div class="media-card">
+                <video loop muted playsinline autoplay>
                     <source src="kitan7.mp4" type="video/mp4">
                 </video>
             </div>
-            <div class="media-card" data-url="kitan8.mp4">
-                <video loop muted playsinline>
+        </div>
+
+        <div class="section media-section" data-index="6">
+            <div class="media-card">
+                <video loop muted playsinline autoplay>
                     <source src="kitan8.mp4" type="video/mp4">
                 </video>
             </div>
-            <div class="media-card" data-url="kitan4.jpg">
-                <img src="kitan4.jpg" alt="Beautiful Moment 1">
+        </div>
+
+        <!-- <div class="section media-section" data-index="7">
+            <div class="media-card">
+                <img src="kitan5.jpg" alt="Beautiful Moment 5">
+            </div>
+        </div> -->
+
+        <!-- Message Sections -->
+        <div class="section">
+            <div class="message-section" data-index="8">
+                <h1>✨ Happy Birthday, My Love! ✨</h1>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="message-section" data-index="9">
+                <p>My dearest <span class='highlight'>Ifeoluwa</span>... my shining <span class='highlight'>Kitan</span>... my beautiful <span class='highlight'>Ajoke</span>. 🥰</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="message-section" data-index="10">
+                <p>On this day, a star was born, and that star is you. The world has been brighter since. ✨</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="message-section" data-index="11">
+                <p>You're stubborn sometimes (yes, you are 😅), but still so sweet it hurts.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="message-section" data-index="12">
+                <p>You make the ordinary feel magical, and even your silence speaks love. 💗</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="message-section" data-index="13">
+                <p>May your new year bring you endless joy, peace, and blessings beyond words. 🌸</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="message-section" data-index="14">
+                <p>Thank you for being my anchor, my gentle fire, and my <span class='highlight'>stubborn miracle</span>.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="message-section" data-index="15">
+                <p>With all my love, <span class='highlight'>Happy Birthday, my angel.</span> 💖</p>
+                <button class="btn" id="replayBtn">Relive the Magic 💫</button>
             </div>
         </div>
     </div>
 
-    <!-- Main Content Wrapper -->
-    <div class="content-wrapper">
-        <div class="content" id="content">
-            <h1 id="title">✨ Happy Birthday, My Love! ✨</h1>
-            <p class="message" data-text="My dearest <span class='highlight'>Ifeoluwa</span>... my shining <span class='highlight'>Kitan</span>... my beautiful <span class='highlight'>Ajoke</span>. 🥰"></p>
-            <p class="message" data-text="On this day, a star was born, and that star is you. The world has been brighter since. ✨"></p>
-            <p class="message" data-text="You're stubborn sometimes (yes, you are 😅), but still so sweet it hurts."></p>
-            <p class="message" data-text="You make the ordinary feel magical, and even your silence speaks love. 💗"></p>
-            <p class="message" data-text="May your new year bring you endless joy, peace, and blessings beyond words. 🌸"></p>
-            <p class="message" data-text="Thank you for being my anchor, my gentle fire, and my <span class='highlight'>stubborn miracle</span>."></p>
-            <p class="message" data-text="With all my love, <span class='highlight'>Happy Birthday, my angel.</span> 💖"></p>
-            <button class="btn" id="replayBtn">Relive the Magic 💫</button>
-        </div>
-    </div>
-
-    <!-- Background Music -->
+    <!-- Music -->
     <audio id="bgMusic" loop>
         <source src="https://cdn.pixabay.com/download/audio/2021/09/01/audio_d6b4a94c33.mp3?filename=romantic-piano-loop-110005.mp3" type="audio/mp3" />
     </audio>
 
     <script>
-        const content = document.getElementById("content");
-        const title = document.getElementById("title");
-        const messages = document.querySelectorAll(".message");
-        const btn = document.getElementById("replayBtn");
         const gatekeeper = document.getElementById("gatekeeper");
         const startBtn = document.getElementById("startBtn");
         const music = document.getElementById("bgMusic");
-        const photoSection = document.getElementById("photo-section");
-        const mediaCards = document.querySelectorAll(".media-card");
+        const replayBtn = document.getElementById("replayBtn");
+        const sections = document.querySelectorAll('.section');
+        const mediaSections = document.querySelectorAll('.media-section');
+        const messageSections = document.querySelectorAll('.message-section');
         
-        let messageIndex = 0;
-        let revealTimeout;
+        let currentIndex = 0;
+        let autoPlayInterval;
 
-        function startMusicAndReveal() {
-            // Play music with better error handling
-            music.volume = 0.5;
-            const playPromise = music.play();
-            
-            if (playPromise !== undefined) {
-                playPromise
-                    .then(() => {
-                        console.log("Music playing successfully!");
-                    })
-                    .catch(error => {
-                        console.error("Music play failed:", error);
-                        // Try again after a short delay
-                        setTimeout(() => {
-                            music.play().catch(e => console.log("Retry failed:", e));
-                        }, 1000);
-                    });
-            }
-
-            // Hide Gatekeeper with animation
-            gatekeeper.classList.add("hidden");
-            
-            // Show photos first with dramatic animation
-            setTimeout(() => {
-                photoSection.classList.add("visible");
-                animateMediaCards();
-            }, 800);
-            
-            // Then show main content
-            setTimeout(() => {
-                content.classList.add("visible");
-                title.classList.add("fade-in");
-            }, 3000);
-
-            setTimeout(startMessageSequence, 4500); 
-        }
-        
-        function animateMediaCards() {
-            mediaCards.forEach((card, i) => {
-                setTimeout(() => {
-                    card.classList.add("animate-in");
-                    
-                    // Auto-play videos when they appear
-                    const video = card.querySelector('video');
-                    if (video) {
-                        video.play().catch(e => console.log("Video autoplay blocked:", e));
-                    }
-                }, 300 + i * 400);
-            });
-        }
-
-        function startMessageSequence() {
-            if (revealTimeout) {
-                clearTimeout(revealTimeout);
-            }
-            messages.forEach(msg => {
-                msg.style.opacity = '0';
-                msg.style.transform = 'translateX(-30px)';
-                msg.classList.remove('show');
-            });
-            btn.classList.remove("fade-in");
-
-            messageIndex = 0;
-            
-            function showNextMessage() {
-                if (messageIndex < messages.length) {
-                    const msg = messages[messageIndex];
-                    msg.innerHTML = msg.getAttribute('data-text'); 
-                    
-                    setTimeout(() => {
-                        msg.classList.add('show');
-                    }, 100);
-                    
-                    messageIndex++;
-                    revealTimeout = setTimeout(showNextMessage, 3500);
-                } else {
-                    // All messages shown, now show button
-                    setTimeout(() => {
-                        btn.classList.add("fade-in");
-                    }, 1500);
-                }
-            }
-            showNextMessage();
-        }
-
-        // Event Listeners
-        startBtn.addEventListener("click", startMusicAndReveal, { once: true });
-
-        btn.addEventListener("click", () => {
-            title.classList.remove("fade-in");
-            content.classList.remove("visible");
-            photoSection.classList.remove("visible");
-            
-            // Reset media cards
-            mediaCards.forEach(card => {
-                card.classList.remove("animate-in");
-                const video = card.querySelector('video');
-                if (video) {
-                    video.pause();
-                    video.currentTime = 0;
-                }
-            });
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            setTimeout(() => {
-                photoSection.classList.add("visible");
-                animateMediaCards();
-                
-                setTimeout(() => {
-                    content.classList.add("visible");
-                    title.classList.add("fade-in");
-                    startMessageSequence();
-                }, 2500);
-            }, 1000);
-        });
-
-        // Star Field Creation
+        // Create stars
         const starsContainer = document.querySelector(".stars");
         function createStars() {
             for (let i = 0; i < 70; i++) {
@@ -525,9 +398,98 @@
                 starsContainer.appendChild(star);
             }
         }
-        
-        // Initial setup
         createStars();
+
+        // Start experience
+        startBtn.addEventListener("click", () => {
+            // Play music
+            music.volume = 0.5;
+            music.play().catch(e => {
+                console.error("Music play failed:", e);
+                setTimeout(() => music.play().catch(err => console.log("Retry failed")), 500);
+            });
+
+            // Hide gatekeeper
+            gatekeeper.classList.add("hidden");
+
+            // Start auto-play sequence
+            setTimeout(startAutoPlay, 500);
+        });
+
+        function startAutoPlay() {
+            currentIndex = 0;
+            showSection(currentIndex);
+            
+            autoPlayInterval = setInterval(() => {
+                currentIndex++;
+                if (currentIndex < sections.length) {
+                    showSection(currentIndex);
+                } else {
+                    clearInterval(autoPlayInterval);
+                }
+            }, 3500); // Each section shows for 3.5 seconds
+        }
+
+        function showSection(index) {
+            // Scroll to section
+            sections[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Animate media cards
+            const mediaSection = sections[index].querySelector('.media-section');
+            if (mediaSection) {
+                setTimeout(() => {
+                    mediaSection.classList.add('visible');
+                    const card = mediaSection.querySelector('.media-card');
+                    if (card) {
+                        card.classList.add('animate-in');
+                        
+                        // Play video if exists
+                        const video = card.querySelector('video');
+                        if (video) {
+                            video.play().catch(e => console.log("Video play failed:", e));
+                        }
+                    }
+                }, 300);
+            }
+
+            // Animate message sections
+            const messageSection = sections[index].querySelector('.message-section');
+            if (messageSection) {
+                setTimeout(() => {
+                    messageSection.classList.add('visible');
+                }, 300);
+            }
+        }
+
+        // Replay button
+        replayBtn.addEventListener("click", () => {
+            // Reset all sections
+            mediaSections.forEach(section => {
+                section.classList.remove('visible');
+                const card = section.querySelector('.media-card');
+                if (card) {
+                    card.classList.remove('animate-in');
+                    const video = card.querySelector('video');
+                    if (video) {
+                        video.pause();
+                        video.currentTime = 0;
+                    }
+                }
+            });
+
+            messageSections.forEach(section => {
+                section.classList.remove('visible');
+            });
+
+            // Clear existing interval
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+            }
+
+            // Scroll to top and restart
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(startAutoPlay, 1000);
+        });
     </script>
 </body>
 </html>
