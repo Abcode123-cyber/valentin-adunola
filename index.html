@@ -16,7 +16,7 @@
         body {
             margin: 0;
             height: 100vh;
-            overflow: hidden;
+            overflow: hidden; /* Crucial: Prevents unwanted scrolling */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -25,8 +25,8 @@
             color: var(--text-color);
         }
 
-        /* Preloader for the Surprise */
-        #preloader {
+        /* Initial Gatekeeper/Click-to-Play Screen */
+        #gatekeeper {
             position: fixed;
             top: 0;
             left: 0;
@@ -35,15 +35,21 @@
             background-color: #000;
             z-index: 9999;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-size: 2rem;
-            color: var(--text-color);
-            opacity: 1;
-            transition: opacity 2s ease-out;
+            transition: opacity 1.5s ease-out;
+            text-align: center;
         }
-        
-        #preloader.hidden {
+
+        #gatekeeper h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: var(--pink-light);
+            margin-bottom: 20px;
+        }
+
+        #gatekeeper.hidden {
             opacity: 0;
             pointer-events: none;
         }
@@ -74,7 +80,7 @@
             text-align: center;
             z-index: 10;
             padding: 40px;
-            background: rgba(255, 255, 255, 0.15); /* Slightly brighter backdrop */
+            background: rgba(255, 255, 255, 0.15);
             border-radius: 25px;
             backdrop-filter: blur(15px);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -151,55 +157,29 @@
         audio {
              display: none;
         }
-        
-        /* Confetti Effect (Optional but cool) */
-        .confetti {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        .confetti-piece {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: var(--pink-light);
-            opacity: 0;
-            animation: fall 5s linear infinite;
-        }
-        
-        @keyframes fall {
-            0% { transform: translate3d(0, -100px, 0) rotate(0deg); opacity: 0; }
-            5% { opacity: 1; }
-            100% { transform: translate3d(0, 100vh, 0) rotate(720deg); opacity: 0; }
-        }
     </style>
 </head>
 <body>
-    <div id="preloader">
-        <p>Preparing the Magic... ✨</p>
+    <div id="gatekeeper">
+        <h2>Tap to Unveil the Magic!</h2>
+        <button class="btn" id="startBtn">Unveil the Magic ✨</button>
     </div>
 
     <div class="stars"></div>
-    <div class="confetti"></div>
 
     <div class="content" id="content">
         <h1 id="title"></h1>
         <p class="message" data-text="My dearest <span class='highlight'>Ifeoluwa</span>... my shining <span class='highlight'>Kitan</span>... my beautiful <span class='highlight'>Ajoke</span>. 🥰"></p>
         <p class="message" data-text="On this day, a star was born, and that star is you. The world has been brighter since. ✨"></p>
-        <p class="message" data-text="You are a beautiful mix of fierce strength and the sweetest kind of love."></p>
-        <p class="message" data-text="You turn the ordinary days into chapters of a fairy tale just by being in them."></p>
-        <p class="message" data-text="May your new year be filled with unforgettable joy, peace that settles your soul, and blessings that overflow. 🌟"></p>
-        <p class="message" data-text="Thank you for being my anchor, my gentle fire, and my everything."></p>
+        <p class="message" data-text="You’re stubborn sometimes (yes, you are 😅), but still so sweet it hurts."></p>
+        <p class="message" data-text="You make the ordinary feel magical, and even your silence speaks love. 💗"></p>
+        <p class="message" data-text="May your new year bring you endless joy, peace, and blessings beyond words. 🌸"></p>
+        <p class="message" data-text="Thank you for being my anchor, my gentle fire, and my <span class='highlight'>stubborn miracle</span>."></p>
         <p class="message" data-text="With all my love, <span class='highlight'>Happy Birthday, my angel.</span> 💖"></p>
         <button class="btn" id="replayBtn">Relive the Magic 💫</button>
     </div>
 
-    <audio id="bgMusic" autoplay loop>
+    <audio id="bgMusic" loop>
         <source src="https://cdn.pixabay.com/download/audio/2021/09/01/audio_d6b4a94c33.mp3?filename=romantic-piano-loop-110005.mp3" type="audio/mp3" />
     </audio>
 
@@ -208,29 +188,26 @@
         const title = document.getElementById("title");
         const messages = document.querySelectorAll(".message");
         const btn = document.getElementById("replayBtn");
-        const preloader = document.getElementById("preloader");
+        const gatekeeper = document.getElementById("gatekeeper");
+        const startBtn = document.getElementById("startBtn");
         const music = document.getElementById("bgMusic");
 
-        // Use a placeholder title initially
         title.innerHTML = "✨ Happy Birthday, My Love! ✨";
 
         let messageIndex = 0;
         let revealTimeout;
 
         function showContent() {
-             // 1. Hide Preloader & Play Music
-            preloader.classList.add("hidden");
-            try {
-                // Attempt to play music, though autoplay often requires user interaction
-                music.play();
-            } catch (error) {
-                 console.log("Music autoplay blocked, will play on interaction.");
-            }
+             // 1. Play Music (guaranteed to work after user click)
+            music.play();
 
-            // 2. Reveal Content Container
+            // 2. Hide Gatekeeper
+            gatekeeper.classList.add("hidden");
+            
+            // 3. Reveal Content Container
             content.classList.add("visible");
             
-            // 3. Start Sequential Reveal
+            // 4. Start Sequential Reveal
             setTimeout(() => {
                 title.classList.add("fade-in");
             }, 500); // Title appears after 0.5s
@@ -271,8 +248,15 @@
             showNextMessage();
         }
 
+        // --- Event Listeners ---
+        
+        // 1. Start Button (The Click-to-Play interaction)
+        startBtn.addEventListener("click", showContent, { once: true });
+
+
+        // 2. Replay Button
         btn.addEventListener("click", () => {
-             // Quick reset of content visibility
+             // Quick reset of content visibility for replay
             title.classList.remove("fade-in");
             content.classList.remove("visible");
             setTimeout(() => {
@@ -297,38 +281,9 @@
                 starsContainer.appendChild(star);
             }
         }
-
-        // --- Confetti Creation (Bonus) ---
-        const confettiContainer = document.querySelector(".confetti");
-        function createConfetti() {
-            for (let i = 0; i < 50; i++) {
-                const piece = document.createElement("div");
-                piece.classList.add("confetti-piece");
-                piece.style.left = Math.random() * 100 + "vw";
-                piece.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 70%)`;
-                piece.style.animationDelay = -Math.random() * 5 + "s"; // Start at different points
-                piece.style.animationDuration = 3 + Math.random() * 4 + "s";
-                confettiContainer.appendChild(piece);
-            }
-        }
         
         // Initial setup
         createStars();
-        createConfetti();
-        
-        // Start the surprise after a short delay
-        window.addEventListener('load', () => {
-             setTimeout(showContent, 3000); // 3-second 'Preparing the Magic...' display
-        });
-        
-        // Add a handler for user interaction to ensure music plays on mobile devices
-        document.body.addEventListener('click', () => {
-            if (music.paused) {
-                music.play().catch(e => console.log("Play failed after click:", e));
-            }
-        }, { once: true });
-
-
     </script>
 </body>
 </html>
