@@ -13,17 +13,23 @@
             --text-color: #fff;
         }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
-            /* Allow scrolling now that the content is taller */
             display: flex;
-            flex-direction: column; /* Allows content to stack vertically */
-            justify-content: flex-start; /* Start content at the top */
+            flex-direction: column;
+            justify-content: flex-start;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); /* Deep Blue Sky */
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             font-family: 'Poppins', sans-serif;
             color: var(--text-color);
+            overflow-x: hidden;
         }
 
         /* Initial Gatekeeper/Click-to-Play Screen */
@@ -33,34 +39,67 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #000;
-            z-index: 9999; /* Highest priority to be visible */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 9999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 1.5s ease-out;
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
             text-align: center;
         }
 
         #gatekeeper h2 {
             font-family: 'Dancing Script', cursive;
-            font-size: clamp(2rem, 5vw, 3rem); /* Responsive font size */
-            color: var(--pink-light);
-            margin-bottom: 20px;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: #fff;
+            margin-bottom: 30px;
+            animation: pulse 2s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
         }
 
         #gatekeeper.hidden {
             opacity: 0;
+            transform: scale(1.5);
             pointer-events: none;
         }
+        
+        #startBtn {
+            background: linear-gradient(135deg, #ff6e7f 0%, #ffb5c3 100%);
+            color: #fff;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(255, 110, 127, 0.5);
+            animation: float 3s ease-in-out infinite;
+            transition: all 0.3s;
+        }
+        
+        #startBtn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(255, 110, 127, 0.7);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
 
-        /* Magical Background Elements (Stars) - fixed so they don't scroll */
+        /* Magical Background Elements (Stars) */
         .stars {
             position: fixed; 
             width: 100%;
             height: 100%;
             z-index: 0;
+            pointer-events: none;
         }
 
         .star {
@@ -78,14 +117,13 @@
 
         /* Content Wrapper for Main Message */
         .content-wrapper {
-             /* Min-height to center on initial screen load, even with scrollable body */
             min-height: 100vh; 
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
             z-index: 10;
-            padding-top: 50px; /* Padding for top scroll area */
+            padding: 50px 20px;
         }
         
         /* Content Area */
@@ -98,169 +136,230 @@
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             border: 1px solid rgba(255, 255, 255, 0.18);
             max-width: 650px;
-            margin: 50px 20px;
+            margin: 50px auto;
             opacity: 0; 
-            transform: scale(0.9);
-            transition: opacity 1.5s ease-in, transform 1.5s ease-in;
+            transform: scale(0.8) translateY(50px);
+            transition: opacity 2s ease-in, transform 2s ease-in;
         }
         
         .content.visible {
             opacity: 1;
-            transform: scale(1);
+            transform: scale(1) translateY(0);
         }
 
         h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 4rem;
+            font-size: clamp(2.5rem, 6vw, 4rem);
             color: var(--pink-light);
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             opacity: 0;
-            transform: translateY(-20px);
-            transition: all 1s ease-out;
+            transform: translateY(-30px) scale(0.9);
+            transition: all 1.5s ease-out;
         }
         
         h1.fade-in {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         .message {
             font-size: 1.3rem;
             line-height: 2rem;
-            margin: 15px 0;
+            margin: 20px 0;
             font-weight: 300;
             opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transform: translateX(-30px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .message.show {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .btn {
             margin-top: 40px;
-            background-color: var(--pink-light);
-            color: #1e3c72;
+            background: linear-gradient(135deg, var(--pink-light) 0%, #ffb5c3 100%);
+            color: #fff;
             border: none;
-            padding: 15px 30px;
+            padding: 18px 40px;
             border-radius: 30px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
             transition: all 0.4s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 20px rgba(255, 110, 127, 0.4);
             opacity: 0;
-            transform: scale(0.9);
+            transform: scale(0.8);
         }
 
         .btn:hover {
-            background-color: #ffb5c3;
-            transform: scale(1.05);
+            background: linear-gradient(135deg, #ffb5c3 0%, var(--pink-light) 100%);
+            transform: scale(1.08);
+            box-shadow: 0 10px 30px rgba(255, 110, 127, 0.6);
         }
         
         .btn.fade-in {
             opacity: 1;
             transform: scale(1);
+            transition: opacity 1s ease-out, transform 1s ease-out;
         }
 
         .highlight {
             font-weight: 600;
             color: var(--pink-dark);
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 8px rgba(191, 233, 255, 0.6);
         }
 
-        /* --- New Photo Section Styles --- */
+        /* Photo/Video Section Styles */
         #photo-section {
             width: 100%;
-            min-height: 80vh; /* Ensures it takes up space and is scrollable */
-            padding: 50px 20px;
+            min-height: 100vh;
+            padding: 80px 20px;
             text-align: center;
             opacity: 0;
             transition: opacity 2s ease-in;
             z-index: 5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         
         #photo-section.visible {
             opacity: 1;
         }
         
-        #photo-section h2 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
-            color: var(--pink-light);
-            margin-bottom: 40px;
-        }
-        
-        .photo-grid {
+        .media-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 30px;
+            max-width: 1200px;
         }
         
-        .photo-card {
-            width: 280px;
-            height: 200px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
+        .media-card {
+            width: 320px;
+            height: 240px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            transform: scale(0.8) rotate(5deg);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform: scale(0) rotate(180deg);
             opacity: 0;
-            transition: all 1.5s ease-out;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            color: var(--text-color);
+            transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            border: 3px solid rgba(255, 255, 255, 0.3);
         }
         
-        .photo-card.animate-in {
+        .media-card.animate-in {
             opacity: 1;
             transform: scale(1) rotate(0deg);
         }
         
-        .photo-card img {
+        .media-card:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 15px 40px rgba(255, 110, 127, 0.6);
+        }
+        
+        .media-card img,
+        .media-card video {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .media-card:hover img,
+        .media-card:hover video {
+            transform: scale(1.1);
+        }
+        
+        .media-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .media-card:hover::before {
+            left: 100%;
         }
         
         audio {
-             display: none;
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .media-card {
+                width: 280px;
+                height: 210px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .message {
+                font-size: 1.1rem;
+                line-height: 1.8rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Gatekeeper Screen -->
     <div id="gatekeeper">
-        <h2>Tap to Unveil the Magic!</h2>
-        <button class="btn" id="startBtn">Unveil the Magic ✨</button>
+        <h2>Tap to Unveil the Magic! ✨</h2>
+        <button id="startBtn">Start the Surprise 💖</button>
     </div>
 
+    <!-- Animated Stars Background -->
     <div class="stars"></div>
 
+    <!-- Photo/Video Section (Appears First) -->
+    <div id="photo-section">
+        <div class="media-grid" id="mediaGrid">
+            <div class="media-card" data-url="IMG_3692.HEIC">
+                <img src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=400" alt="Beautiful Moment 1">
+            </div>
+            <div class="media-card" data-url="IMG_3698.HEIC">
+                <video loop muted playsinline>
+                    <source src="https://cdn.pixabay.com/vimeo/402818030/heart-39277.mp4?width=640" type="video/mp4">
+                </video>
+            </div>
+            <div class="media-card" data-url="IMG_3699.HEIC">
+                <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400" alt="Beautiful Moment 2">
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Wrapper -->
     <div class="content-wrapper">
         <div class="content" id="content">
-            <h1 id="title"></h1>
+            <h1 id="title">✨ Happy Birthday, My Love! ✨</h1>
             <p class="message" data-text="My dearest <span class='highlight'>Ifeoluwa</span>... my shining <span class='highlight'>Kitan</span>... my beautiful <span class='highlight'>Ajoke</span>. 🥰"></p>
             <p class="message" data-text="On this day, a star was born, and that star is you. The world has been brighter since. ✨"></p>
-            <p class="message" data-text="You’re stubborn sometimes (yes, you are 😅), but still so sweet it hurts."></p>
+            <p class="message" data-text="You're stubborn sometimes (yes, you are 😅), but still so sweet it hurts."></p>
             <p class="message" data-text="You make the ordinary feel magical, and even your silence speaks love. 💗"></p>
             <p class="message" data-text="May your new year bring you endless joy, peace, and blessings beyond words. 🌸"></p>
             <p class="message" data-text="Thank you for being my anchor, my gentle fire, and my <span class='highlight'>stubborn miracle</span>."></p>
             <p class="message" data-text="With all my love, <span class='highlight'>Happy Birthday, my angel.</span> 💖"></p>
-            <p class="message final-message" data-text="Scroll down for the final surprise... ⬇️"></p>
             <button class="btn" id="replayBtn">Relive the Magic 💫</button>
         </div>
     </div>
-    
-    <div id="photo-section">
-        <h2>Our Favorite Memories Together! 📸</h2>
-        <div class="photo-grid" id="photoGrid">
-            <div class="photo-card" data-url="IMG_3692.HEIC"><img src="YOUR_IMAGE_URL_1_HERE" alt="Memory 1"></div>
-            <div class="photo-card" data-url="IMG_3698.HEIC"><img src="YOUR_IMAGE_URL_2_HERE" alt="Memory 2"></div>
-            <div class="photo-card" data-url="IMG_3699.HEIC"><img src="YOUR_IMAGE_URL_3_HERE" alt="Memory 3"></div>
-            </div>
-    </div>
 
+    <!-- Background Music -->
     <audio id="bgMusic" loop>
         <source src="https://cdn.pixabay.com/download/audio/2021/09/01/audio_d6b4a94c33.mp3?filename=romantic-piano-loop-110005.mp3" type="audio/mp3" />
     </audio>
@@ -269,45 +368,77 @@
         const content = document.getElementById("content");
         const title = document.getElementById("title");
         const messages = document.querySelectorAll(".message");
-        const finalMessage = document.querySelector(".final-message");
         const btn = document.getElementById("replayBtn");
         const gatekeeper = document.getElementById("gatekeeper");
         const startBtn = document.getElementById("startBtn");
         const music = document.getElementById("bgMusic");
         const photoSection = document.getElementById("photo-section");
-        const photoCards = document.querySelectorAll(".photo-card");
+        const mediaCards = document.querySelectorAll(".media-card");
         
         let messageIndex = 0;
         let revealTimeout;
 
-        title.innerHTML = "✨ Happy Birthday, My Love! ✨";
-
         function startMusicAndReveal() {
-            // Attempt to play music first
-            music.play().catch(e => console.error("Music play failed:", e));
-
-            // Hide Gatekeeper and begin main message sequence
-            gatekeeper.classList.add("hidden");
-            content.classList.add("visible");
+            // Play music with better error handling
+            music.volume = 0.5;
+            const playPromise = music.play();
             
-            setTimeout(() => {
-                title.classList.add("fade-in");
-            }, 500); 
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        console.log("Music playing successfully!");
+                    })
+                    .catch(error => {
+                        console.error("Music play failed:", error);
+                        // Try again after a short delay
+                        setTimeout(() => {
+                            music.play().catch(e => console.log("Retry failed:", e));
+                        }, 1000);
+                    });
+            }
 
-            setTimeout(startMessageSequence, 1500); 
+            // Hide Gatekeeper with animation
+            gatekeeper.classList.add("hidden");
+            
+            // Show photos first with dramatic animation
+            setTimeout(() => {
+                photoSection.classList.add("visible");
+                animateMediaCards();
+            }, 800);
+            
+            // Then show main content
+            setTimeout(() => {
+                content.classList.add("visible");
+                title.classList.add("fade-in");
+            }, 3000);
+
+            setTimeout(startMessageSequence, 4500); 
+        }
+        
+        function animateMediaCards() {
+            mediaCards.forEach((card, i) => {
+                setTimeout(() => {
+                    card.classList.add("animate-in");
+                    
+                    // Auto-play videos when they appear
+                    const video = card.querySelector('video');
+                    if (video) {
+                        video.play().catch(e => console.log("Video autoplay blocked:", e));
+                    }
+                }, 300 + i * 400);
+            });
         }
 
         function startMessageSequence() {
-            // Reset state
             if (revealTimeout) {
                 clearTimeout(revealTimeout);
             }
             messages.forEach(msg => {
                 msg.style.opacity = '0';
-                msg.style.transform = 'translateY(10px)';
+                msg.style.transform = 'translateX(-30px)';
+                msg.classList.remove('show');
             });
             btn.classList.remove("fade-in");
-            photoSection.classList.remove("visible"); // Hide photo section on replay
 
             messageIndex = 0;
             
@@ -315,60 +446,56 @@
                 if (messageIndex < messages.length) {
                     const msg = messages[messageIndex];
                     msg.innerHTML = msg.getAttribute('data-text'); 
-                    msg.style.transitionDelay = `${messageIndex * 0.1}s`; 
-                    msg.style.opacity = '1';
-                    msg.style.transform = 'translateY(0)';
-                    messageIndex++;
                     
-                    // Check if it's the final 'Scroll Down' message
-                    if (msg === finalMessage) {
-                         // Proceed to final button and photo sequence after a short delay
-                         revealTimeout = setTimeout(() => {
-                            btn.classList.add("fade-in");
-                            showPhotoSurprise();
-                        }, 4000);
-                    } else {
-                         revealTimeout = setTimeout(showNextMessage, 4000); 
-                    }
+                    setTimeout(() => {
+                        msg.classList.add('show');
+                    }, 100);
+                    
+                    messageIndex++;
+                    revealTimeout = setTimeout(showNextMessage, 3500);
+                } else {
+                    // All messages shown, now show button
+                    setTimeout(() => {
+                        btn.classList.add("fade-in");
+                    }, 1500);
                 }
             }
             showNextMessage();
         }
-        
-        function showPhotoSurprise() {
-            photoSection.classList.add("visible");
-            
-            // Animate photos one by one
-            photoCards.forEach((card, i) => {
-                // Stagger the animation of each photo card
-                setTimeout(() => {
-                    card.classList.add("animate-in");
-                }, 500 + i * 500); // 500ms initial delay, then 500ms between each card
-            });
-            
-            // Scroll the user down slightly to reveal the photo section
-            window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
-        }
 
-
-        // --- Event Listeners ---
+        // Event Listeners
         startBtn.addEventListener("click", startMusicAndReveal, { once: true });
 
         btn.addEventListener("click", () => {
-             // Reset the sequence for replay
             title.classList.remove("fade-in");
             content.classList.remove("visible");
-            window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll back to the top
+            photoSection.classList.remove("visible");
+            
+            // Reset media cards
+            mediaCards.forEach(card => {
+                card.classList.remove("animate-in");
+                const video = card.querySelector('video');
+                if (video) {
+                    video.pause();
+                    video.currentTime = 0;
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             
             setTimeout(() => {
-                 content.classList.add("visible");
-                 title.classList.add("fade-in");
-                 startMessageSequence();
+                photoSection.classList.add("visible");
+                animateMediaCards();
+                
+                setTimeout(() => {
+                    content.classList.add("visible");
+                    title.classList.add("fade-in");
+                    startMessageSequence();
+                }, 2500);
             }, 1000);
         });
 
-
-        // --- Star Field Creation ---
+        // Star Field Creation
         const starsContainer = document.querySelector(".stars");
         function createStars() {
             for (let i = 0; i < 70; i++) {
