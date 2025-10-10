@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>A Star is Born Today ✨</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --pink-light: #ff6e7f;
@@ -57,15 +60,22 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
         }
 
         #gatekeeper.hidden {
             opacity: 0;
             pointer-events: none;
         }
-        
+
         #startBtn {
             background: linear-gradient(135deg, #ff6e7f 0%, #ffb5c3 100%);
             color: #fff;
@@ -79,20 +89,27 @@
             animation: float 3s ease-in-out infinite;
             transition: all 0.3s;
         }
-        
+
         #startBtn:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 35px rgba(255, 110, 127, 0.7);
         }
-        
+
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         /* Stars Background */
         .stars {
-            position: fixed; 
+            position: fixed;
             width: 100%;
             height: 100%;
             z-index: 0;
@@ -108,8 +125,15 @@
         }
 
         @keyframes twinkle {
-            from { opacity: 0.5; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1.1); }
+            from {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1.1);
+            }
         }
 
         /* Main Container */
@@ -132,35 +156,21 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            opacity: 0;
-            transform: scale(0.8);
-            transition: opacity 1.5s ease, transform 1.5s ease;
-        }
-
-        .media-section.visible {
-            opacity: 1;
-            transform: scale(1);
         }
 
         .media-card {
             width: 90%;
             max-width: 600px;
             height: 450px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 25px;
             overflow: hidden;
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            transform: scale(0) rotate(180deg);
-            opacity: 0;
-            transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        
-        .media-card.animate-in {
+            border: 4px solid rgba(255, 255, 255, 0.5);
             opacity: 1;
             transform: scale(1) rotate(0deg);
         }
-        
+
         .media-card img,
         .media-card video {
             width: 100%;
@@ -249,6 +259,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Gatekeeper -->
     <div id="gatekeeper">
@@ -310,12 +321,6 @@
             </div>
         </div>
 
-        <!-- <div class="section media-section" data-index="7">
-            <div class="media-card">
-                <img src="kitan5.jpg" alt="Beautiful Moment 5">
-            </div>
-        </div> -->
-
         <!-- Message Sections -->
         <div class="section">
             <div class="message-section" data-index="8">
@@ -325,7 +330,8 @@
 
         <div class="section">
             <div class="message-section" data-index="9">
-                <p>My dearest <span class='highlight'>Ifeoluwa</span>... my shining <span class='highlight'>Kitan</span>... my beautiful <span class='highlight'>Ajoke</span>. 🥰</p>
+                <p>My dearest <span class='highlight'>Ifeoluwa</span>... my shining <span
+                        class='highlight'>Kitan</span>... my beautiful <span class='highlight'>Ajoke</span>. 🥰</p>
             </div>
         </div>
 
@@ -355,7 +361,8 @@
 
         <div class="section">
             <div class="message-section" data-index="14">
-                <p>Thank you for being my anchor, my gentle fire, and my <span class='highlight'>stubborn miracle</span>.</p>
+                <p>Thank you for being my anchor, my gentle fire, and my <span class='highlight'>stubborn
+                        miracle</span>.</p>
             </div>
         </div>
 
@@ -369,7 +376,7 @@
 
     <!-- Music -->
     <audio id="bgMusic" loop>
-        <source src="https://cdn.pixabay.com/download/audio/2021/09/01/audio_d6b4a94c33.mp3?filename=romantic-piano-loop-110005.mp3" type="audio/mp3" />
+        <source src="background-music-413276.mp3" type="audio/mp3" />
     </audio>
 
     <script>
@@ -380,7 +387,7 @@
         const sections = document.querySelectorAll('.section');
         const mediaSections = document.querySelectorAll('.media-section');
         const messageSections = document.querySelectorAll('.message-section');
-        
+
         let currentIndex = 0;
         let autoPlayInterval;
 
@@ -390,10 +397,10 @@
             for (let i = 0; i < 70; i++) {
                 const star = document.createElement("div");
                 star.classList.add("star");
-                star.textContent = "•"; 
+                star.textContent = "•";
                 star.style.left = Math.random() * 100 + "vw";
                 star.style.top = Math.random() * 100 + "vh";
-                star.style.fontSize = 10 + Math.random() * 10 + "px"; 
+                star.style.fontSize = 10 + Math.random() * 10 + "px";
                 star.style.animationDuration = 2 + Math.random() * 4 + "s";
                 starsContainer.appendChild(star);
             }
@@ -419,7 +426,7 @@
         function startAutoPlay() {
             currentIndex = 0;
             showSection(currentIndex);
-            
+
             autoPlayInterval = setInterval(() => {
                 currentIndex++;
                 if (currentIndex < sections.length) {
@@ -435,19 +442,15 @@
             sections[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
 
             // Animate media cards
-            const mediaSection = sections[index].querySelector('.media-section');
-            if (mediaSection) {
+            const card = sections[index].querySelector('.media-card');
+            if (card) {
                 setTimeout(() => {
-                    mediaSection.classList.add('visible');
-                    const card = mediaSection.querySelector('.media-card');
-                    if (card) {
-                        card.classList.add('animate-in');
-                        
-                        // Play video if exists
-                        const video = card.querySelector('video');
-                        if (video) {
-                            video.play().catch(e => console.log("Video play failed:", e));
-                        }
+                    card.classList.add('animate-in');
+
+                    // Play video if exists
+                    const video = card.querySelector('video');
+                    if (video) {
+                        video.play().catch(e => console.log("Video play failed:", e));
                     }
                 }, 300);
             }
@@ -463,20 +466,18 @@
 
         // Replay button
         replayBtn.addEventListener("click", () => {
-            // Reset all sections
-            mediaSections.forEach(section => {
-                section.classList.remove('visible');
-                const card = section.querySelector('.media-card');
-                if (card) {
-                    card.classList.remove('animate-in');
-                    const video = card.querySelector('video');
-                    if (video) {
-                        video.pause();
-                        video.currentTime = 0;
-                    }
+            // Reset all media cards
+            const allCards = document.querySelectorAll('.media-card');
+            allCards.forEach(card => {
+                card.classList.remove('animate-in');
+                const video = card.querySelector('video');
+                if (video) {
+                    video.pause();
+                    video.currentTime = 0;
                 }
             });
 
+            // Reset all message sections
             messageSections.forEach(section => {
                 section.classList.remove('visible');
             });
@@ -492,4 +493,5 @@
         });
     </script>
 </body>
+
 </html>
