@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday My Love ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at top left, #ff9a9e, #fad0c4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.8em;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    p {
+      font-size: 1.2em;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -10px;
+      color: #ff3366;
+      font-size: 20px;
+      animation: floatUp 6s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 0.7; }
+      100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
+    }
+
+    #message {
+      font-size: 1.3em;
+      max-width: 90%;
+      margin-top: 20px;
+      min-height: 60px;
+      line-height: 1.6;
+    }
+
+    #finalText {
+      font-size: 2em;
+      margin-top: 40px;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards 10s;
+    }
+
+    .btn {
+      margin-top: 40px;
+      background: white;
+      color: #ff3366;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #ff3366;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <audio id="music" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_dafe2d7ffb.mp3?filename=soft-romantic-piano-140983.mp3" autoplay loop></audio>
+
+  <h1 id="greeting">Hey My Love ❤️</h1>
+  <div id="message"></div>
+  <h1 id="finalText">Happy Birthday <span id="names"></span> 🎂</h1>
+  <button class="btn" onclick="replay()">Replay 💖</button>
+
+  <script>
+    const messages = [
+      "Today isn’t just another day...",
+      "It’s the day the world got someone truly special 💫",
+      "You bring peace, laughter, and magic into my life every single day 💕",
+      "And today, I just want to celebrate YOU 🌸"
+    ];
+
+    const names = ["Ifeoluwa", "Kitan", "Tawakalit", "Ajoke"];
+
+    const messageContainer = document.getElementById('message');
+    const namesContainer = document.getElementById('names');
+
+    // Floating hearts
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = 4 + Math.random() * 3 + 's';
+      heart.innerHTML = ['💖', '❤️', '💘', '💞'][Math.floor(Math.random() * 4)];
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 7000);
+    }
+    setInterval(createHeart, 500);
+
+    // Typing effect
+    async function typeMessage(text, delay = 50) {
+      messageContainer.innerHTML = "";
+      for (let char of text) {
+        messageContainer.innerHTML += char;
+        await new Promise(res => setTimeout(res, delay));
+      }
+    }
+
+    async function showMessages() {
+      for (let i = 0; i < messages.length; i++) {
+        await typeMessage(messages[i]);
+        await new Promise(res => setTimeout(res, 1500));
+      }
+      document.getElementById('finalText').style.opacity = 1;
+      await typeNames();
+    }
+
+    async function typeNames() {
+      for (let i = 0; i < names.length; i++) {
+        namesContainer.textContent = names[i];
+        await new Promise(res => setTimeout(res, 1200));
+      }
+      namesContainer.textContent = names.join(" 💖 ");
+    }
+
+    function replay() {
+      messageContainer.innerHTML = "";
+      namesContainer.innerHTML = "";
+      document.getElementById('finalText').style.opacity = 0;
+      showMessages();
+    }
+
+    // Start
+    showMessages();
+  </script>
+</body>
+</html>
