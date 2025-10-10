@@ -321,6 +321,12 @@
             </div>
         </div>
 
+        <div class="section media-section" data-index="7">
+            <div class="media-card">
+                <img src="kitan5.jpg" alt="Beautiful Moment 5">
+            </div>
+        </div>
+
         <!-- Message Sections -->
         <div class="section">
             <div class="message-section" data-index="8">
@@ -433,6 +439,10 @@
                     showSection(currentIndex);
                 } else {
                     clearInterval(autoPlayInterval);
+                    // Stop music when reaching the end
+                    setTimeout(() => {
+                        music.pause();
+                    }, 2000); // Wait 2 seconds before stopping music
                 }
             }, 3500); // Each section shows for 3.5 seconds
         }
@@ -466,6 +476,10 @@
 
         // Replay button
         replayBtn.addEventListener("click", () => {
+            // Restart music
+            music.currentTime = 0;
+            music.play().catch(e => console.log("Music replay failed:", e));
+
             // Reset all media cards
             const allCards = document.querySelectorAll('.media-card');
             allCards.forEach(card => {
