@@ -15,11 +15,12 @@
 
         body {
             margin: 0;
-            height: 100vh;
-            overflow: hidden; /* Crucial: Prevents unwanted scrolling */
+            /* Allow scrolling now that the content is taller */
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* Allows content to stack vertically */
+            justify-content: flex-start; /* Start content at the top */
             align-items: center;
+            min-height: 100vh;
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); /* Deep Blue Sky */
             font-family: 'Poppins', sans-serif;
             color: var(--text-color);
@@ -33,7 +34,7 @@
             width: 100%;
             height: 100%;
             background-color: #000;
-            z-index: 9999;
+            z-index: 9999; /* Highest priority to be visible */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -44,7 +45,7 @@
 
         #gatekeeper h2 {
             font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
+            font-size: clamp(2rem, 5vw, 3rem); /* Responsive font size */
             color: var(--pink-light);
             margin-bottom: 20px;
         }
@@ -54,9 +55,9 @@
             pointer-events: none;
         }
 
-        /* Magical Background Elements (Stars) */
+        /* Magical Background Elements (Stars) - fixed so they don't scroll */
         .stars {
-            position: fixed;
+            position: fixed; 
             width: 100%;
             height: 100%;
             z-index: 0;
@@ -75,10 +76,21 @@
             to { opacity: 1; transform: scale(1.1); }
         }
 
+        /* Content Wrapper for Main Message */
+        .content-wrapper {
+             /* Min-height to center on initial screen load, even with scrollable body */
+            min-height: 100vh; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            z-index: 10;
+            padding-top: 50px; /* Padding for top scroll area */
+        }
+        
         /* Content Area */
         .content {
             text-align: center;
-            z-index: 10;
             padding: 40px;
             background: rgba(255, 255, 255, 0.15);
             border-radius: 25px;
@@ -86,7 +98,8 @@
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             border: 1px solid rgba(255, 255, 255, 0.18);
             max-width: 650px;
-            opacity: 0; /* Initially hidden */
+            margin: 50px 20px;
+            opacity: 0; 
             transform: scale(0.9);
             transition: opacity 1.5s ease-in, transform 1.5s ease-in;
         }
@@ -153,6 +166,63 @@
             color: var(--pink-dark);
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
         }
+
+        /* --- New Photo Section Styles --- */
+        #photo-section {
+            width: 100%;
+            min-height: 80vh; /* Ensures it takes up space and is scrollable */
+            padding: 50px 20px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 2s ease-in;
+            z-index: 5;
+        }
+        
+        #photo-section.visible {
+            opacity: 1;
+        }
+        
+        #photo-section h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: var(--pink-light);
+            margin-bottom: 40px;
+        }
+        
+        .photo-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .photo-card {
+            width: 280px;
+            height: 200px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transform: scale(0.8) rotate(5deg);
+            opacity: 0;
+            transition: all 1.5s ease-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+        
+        .photo-card.animate-in {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+        
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
         
         audio {
              display: none;
@@ -167,16 +237,29 @@
 
     <div class="stars"></div>
 
-    <div class="content" id="content">
-        <h1 id="title"></h1>
-        <p class="message" data-text="My dearest <span class='highlight'>Ifeoluwa</span>... my shining <span class='highlight'>Kitan</span>... my beautiful <span class='highlight'>Ajoke</span>. 🥰"></p>
-        <p class="message" data-text="On this day, a star was born, and that star is you. The world has been brighter since. ✨"></p>
-        <p class="message" data-text="You’re stubborn sometimes (yes, you are 😅), but still so sweet it hurts."></p>
-        <p class="message" data-text="You make the ordinary feel magical, and even your silence speaks love. 💗"></p>
-        <p class="message" data-text="May your new year bring you endless joy, peace, and blessings beyond words. 🌸"></p>
-        <p class="message" data-text="Thank you for being my anchor, my gentle fire, and my <span class='highlight'>stubborn miracle</span>."></p>
-        <p class="message" data-text="With all my love, <span class='highlight'>Happy Birthday, my angel.</span> 💖"></p>
-        <button class="btn" id="replayBtn">Relive the Magic 💫</button>
+    <div class="content-wrapper">
+        <div class="content" id="content">
+            <h1 id="title"></h1>
+            <p class="message" data-text="My dearest <span class='highlight'>Ifeoluwa</span>... my shining <span class='highlight'>Kitan</span>... my beautiful <span class='highlight'>Ajoke</span>. 🥰"></p>
+            <p class="message" data-text="On this day, a star was born, and that star is you. The world has been brighter since. ✨"></p>
+            <p class="message" data-text="You’re stubborn sometimes (yes, you are 😅), but still so sweet it hurts."></p>
+            <p class="message" data-text="You make the ordinary feel magical, and even your silence speaks love. 💗"></p>
+            <p class="message" data-text="May your new year bring you endless joy, peace, and blessings beyond words. 🌸"></p>
+            <p class="message" data-text="Thank you for being my anchor, my gentle fire, and my <span class='highlight'>stubborn miracle</span>."></p>
+            <p class="message" data-text="With all my love, <span class='highlight'>Happy Birthday, my angel.</span> 💖"></p>
+            <p class="message final-message" data-text="Scroll down for the final surprise... ⬇️"></p>
+            <button class="btn" id="replayBtn">Relive the Magic 💫</button>
+        </div>
+    </div>
+    
+    <div id="photo-section">
+        <h2>Our Favorite Memories Together! 📸</h2>
+        <div class="photo-grid" id="photoGrid">
+            <div class="photo-card" data-url="YOUR_IMAGE_URL_1"><img src="YOUR_IMAGE_URL_1_HERE" alt="Memory 1"></div>
+            <div class="photo-card" data-url="YOUR_IMAGE_URL_2"><img src="YOUR_IMAGE_URL_2_HERE" alt="Memory 2"></div>
+            <div class="photo-card" data-url="YOUR_IMAGE_URL_3"><img src="YOUR_IMAGE_URL_3_HERE" alt="Memory 3"></div>
+            <div class="photo-card" data-url="YOUR_IMAGE_URL_4"><img src="YOUR_IMAGE_URL_4_HERE" alt="Memory 4"></div>
+            </div>
     </div>
 
     <audio id="bgMusic" loop>
@@ -187,36 +270,36 @@
         const content = document.getElementById("content");
         const title = document.getElementById("title");
         const messages = document.querySelectorAll(".message");
+        const finalMessage = document.querySelector(".final-message");
         const btn = document.getElementById("replayBtn");
         const gatekeeper = document.getElementById("gatekeeper");
         const startBtn = document.getElementById("startBtn");
         const music = document.getElementById("bgMusic");
-
-        title.innerHTML = "✨ Happy Birthday, My Love! ✨";
-
+        const photoSection = document.getElementById("photo-section");
+        const photoCards = document.querySelectorAll(".photo-card");
+        
         let messageIndex = 0;
         let revealTimeout;
 
-        function showContent() {
-             // 1. Play Music (guaranteed to work after user click)
-            music.play();
+        title.innerHTML = "✨ Happy Birthday, My Love! ✨";
 
-            // 2. Hide Gatekeeper
+        function startMusicAndReveal() {
+            // Attempt to play music first
+            music.play().catch(e => console.error("Music play failed:", e));
+
+            // Hide Gatekeeper and begin main message sequence
             gatekeeper.classList.add("hidden");
-            
-            // 3. Reveal Content Container
             content.classList.add("visible");
             
-            // 4. Start Sequential Reveal
             setTimeout(() => {
                 title.classList.add("fade-in");
-            }, 500); // Title appears after 0.5s
+            }, 500); 
 
-            setTimeout(startMessageSequence, 1500); // Messages start after 1.5s
+            setTimeout(startMessageSequence, 1500); 
         }
 
         function startMessageSequence() {
-            // Clear any running sequence
+            // Reset state
             if (revealTimeout) {
                 clearTimeout(revealTimeout);
             }
@@ -225,45 +308,64 @@
                 msg.style.transform = 'translateY(10px)';
             });
             btn.classList.remove("fade-in");
-            
+            photoSection.classList.remove("visible"); // Hide photo section on replay
+
             messageIndex = 0;
             
             function showNextMessage() {
                 if (messageIndex < messages.length) {
                     const msg = messages[messageIndex];
-                    // Set the HTML content from data-text
                     msg.innerHTML = msg.getAttribute('data-text'); 
-                    msg.style.transitionDelay = `${messageIndex * 0.1}s`; // Stagger transition
+                    msg.style.transitionDelay = `${messageIndex * 0.1}s`; 
                     msg.style.opacity = '1';
                     msg.style.transform = 'translateY(0)';
                     messageIndex++;
-                    revealTimeout = setTimeout(showNextMessage, 4000); // Wait 4s before next message
-                } else {
-                    // Show the button after the last message
-                    setTimeout(() => {
-                        btn.classList.add("fade-in");
-                    }, 1000);
+                    
+                    // Check if it's the final 'Scroll Down' message
+                    if (msg === finalMessage) {
+                         // Proceed to final button and photo sequence after a short delay
+                         revealTimeout = setTimeout(() => {
+                            btn.classList.add("fade-in");
+                            showPhotoSurprise();
+                        }, 4000);
+                    } else {
+                         revealTimeout = setTimeout(showNextMessage, 4000); 
+                    }
                 }
             }
             showNextMessage();
         }
+        
+        function showPhotoSurprise() {
+            photoSection.classList.add("visible");
+            
+            // Animate photos one by one
+            photoCards.forEach((card, i) => {
+                // Stagger the animation of each photo card
+                setTimeout(() => {
+                    card.classList.add("animate-in");
+                }, 500 + i * 500); // 500ms initial delay, then 500ms between each card
+            });
+            
+            // Scroll the user down slightly to reveal the photo section
+            window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+        }
+
 
         // --- Event Listeners ---
-        
-        // 1. Start Button (The Click-to-Play interaction)
-        startBtn.addEventListener("click", showContent, { once: true });
+        startBtn.addEventListener("click", startMusicAndReveal, { once: true });
 
-
-        // 2. Replay Button
         btn.addEventListener("click", () => {
-             // Quick reset of content visibility for replay
+             // Reset the sequence for replay
             title.classList.remove("fade-in");
             content.classList.remove("visible");
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll back to the top
+            
             setTimeout(() => {
-                 title.classList.add("fade-in");
                  content.classList.add("visible");
+                 title.classList.add("fade-in");
                  startMessageSequence();
-            }, 500);
+            }, 1000);
         });
 
 
@@ -273,10 +375,10 @@
             for (let i = 0; i < 70; i++) {
                 const star = document.createElement("div");
                 star.classList.add("star");
-                star.textContent = "•"; // A small dot for a star
+                star.textContent = "•"; 
                 star.style.left = Math.random() * 100 + "vw";
                 star.style.top = Math.random() * 100 + "vh";
-                star.style.fontSize = 10 + Math.random() * 10 + "px"; // Variable size
+                star.style.fontSize = 10 + Math.random() * 10 + "px"; 
                 star.style.animationDuration = 2 + Math.random() * 4 + "s";
                 starsContainer.appendChild(star);
             }
