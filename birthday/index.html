@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ifeoluwakitan ✨ A Star is Born Today ✨</title>
+    <link rel="icon" type="image/jpg" href="kitan1.jpg" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --pink-light: #ff6e7f;
+            --pink-dark: #bfe9ff;
+            --text-color: #fff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        /* Gatekeeper Screen */
+        #gatekeeper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease-out;
+            text-align: center;
+        }
+
+        #gatekeeper h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: #fff;
+            margin-bottom: 30px;
+            animation: pulse 2s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        #gatekeeper.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #startBtn {
+            background: linear-gradient(135deg, #ff6e7f 0%, #ffb5c3 100%);
+            color: #fff;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(255, 110, 127, 0.5);
+            animation: float 3s ease-in-out infinite;
+            transition: all 0.3s;
+        }
+
+        #startBtn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(255, 110, 127, 0.7);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Stars Background */
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.8);
+            animation: twinkle 3s ease-in-out infinite alternate;
+            font-size: 15px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+        }
+
+        @keyframes twinkle {
+            from {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+
+        /* Main Container */
+        .main-container {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Full Screen Sections */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* Individual Media Card Section */
+        .media-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .media-card {
+            width: 90%;
+            max-width: 600px;
+            height: 450px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+            border: 4px solid rgba(255, 255, 255, 0.5);
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+
+        .media-card img,
+        .media-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Message Sections */
+        .message-section {
+            text-align: center;
+            max-width: 700px;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 40px rgba(31, 38, 135, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1.5s ease, transform 1.5s ease;
+        }
+
+        .message-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .message-section h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--pink-light);
+            text-shadow: 0 0 20px rgba(255, 110, 127, 0.6);
+            margin-bottom: 30px;
+        }
+
+        .message-section p {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            line-height: 2rem;
+            margin: 25px 0;
+            font-weight: 300;
+        }
+
+        .highlight {
+            font-weight: 600;
+            color: var(--pink-dark);
+            text-shadow: 0 0 10px rgba(191, 233, 255, 0.8);
+        }
+
+        .btn {
+            margin-top: 40px;
+            background: linear-gradient(135deg, var(--pink-light) 0%, #ffb5c3 100%);
+            color: #fff;
+            border: none;
+            padding: 18px 45px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.4s;
+            box-shadow: 0 6px 20px rgba(255, 110, 127, 0.4);
+        }
+
+        .btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 10px 30px rgba(255, 110, 127, 0.6);
+        }
+
+        audio {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .media-card {
+                height: 350px;
+            }
+
+            .message-section {
+                padding: 40px 25px;
+            }
+
+            .message-section p {
+                font-size: 1.1rem;
+                line-height: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Gatekeeper -->
+    <div id="gatekeeper">
+        <h2>Tap to Unveil the Magic! ✨</h2>
+        <button id="startBtn">▶ Play 💖</button>
+    </div>
+
+    <!-- Stars -->
+    <div class="stars"></div>
+
+    <!-- Main Container -->
+    <div class="main-container" id="mainContainer">
+        <!-- Media Sections (One per screen) -->
+        <div class="section media-section" data-index="0">
+            <div class="media-card">
+                <img src="kitan1.jpg" alt="Beautiful Moment 1">
+            </div>
+        </div>
+
+        <div class="section media-section" data-index="1">
+            <div class="media-card">
+                <img src="kitan2.jpg" alt="Beautiful Moment 2">
+            </div>
+        </div>
+
+        <div class="section media-section" data-index="2">
+            <div class="media-card">
+                <img src="kitan3.jpg" alt="Beautiful Moment 3">
+            </div>
+        </div>
+
+        <div class="section media-section" data-index="3">
+            <div class="media-card">
+                <img src="kitan4.jpg" alt="Beautiful Moment 4">
+            </div>
+        </div>
+
+        <div class="section media-section" data-index="4">
+            <div class="media-card">
+                <video loop muted playsinline autoplay>
+                    <source src="kitan6.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <div class="section media-section" data-index="5">
+            <div class="media-card">
+                <video loop muted playsinline autoplay>
+                    <source src="kitan7.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <div class="section media-section" data-index="6">
+            <div class="media-card">
+                <video loop muted playsinline autoplay>
+                    <source src="kitan8.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <div class="section media-section" data-index="7">
+            <div class="media-card">
+                <video loop muted playsinline autoplay>
+                    <source src="kitan2.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <!-- Message Sections -->
+        <div class="section">
+            <div class="message-section" data-index="8">
+                <h1>✨ Happy Birthday, My Love! ✨</h1>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="message-section" data-index="9">
+                <p>My dearest <span class='highlight'>Ifeoluwa</span>... my shining <span
+                        class='highlight'>Kitan</span>... my beautiful <span class='highlight'>Ajoke</span>. 🥰</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="message-section" data-index="10">
+                <p>On this day, a star was born, and that star is you. The world has been brighter since. ✨</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="message-section" data-index="11">
+                <p>You're stubborn sometimes (yes, you are 😅), but still so sweet it hurts.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="message-section" data-index="12">
+                <p>You make the ordinary feel magical, and even your silence speaks love. 💗</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="message-section" data-index="13">
+                <p>May your new year bring you endless joy, peace, and blessings beyond words. 🌸</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="message-section" data-index="14">
+                <p>Thank you for being my anchor, my gentle fire, and my <span class='highlight'>stubborn
+                        miracle</span>.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="message-section" data-index="15">
+                <p>With all my love, <span class='highlight'>Happy Birthday, my angel.</span> 💖</p>
+                <button class="btn" id="replayBtn">Relive the Magic 💫</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Music -->
+    <audio id="bgMusic" loop>
+        <source src="background-music-413276.mp3" type="audio/mp3" />
+    </audio>
+
+    <script>
+        const gatekeeper = document.getElementById("gatekeeper");
+        const startBtn = document.getElementById("startBtn");
+        const music = document.getElementById("bgMusic");
+        const replayBtn = document.getElementById("replayBtn");
+        const sections = document.querySelectorAll('.section');
+        const mediaSections = document.querySelectorAll('.media-section');
+        const messageSections = document.querySelectorAll('.message-section');
+
+        let currentIndex = 0;
+        let autoPlayInterval;
+
+        // Create stars
+        const starsContainer = document.querySelector(".stars");
+        function createStars() {
+            for (let i = 0; i < 70; i++) {
+                const star = document.createElement("div");
+                star.classList.add("star");
+                star.textContent = "•";
+                star.style.left = Math.random() * 100 + "vw";
+                star.style.top = Math.random() * 100 + "vh";
+                star.style.fontSize = 10 + Math.random() * 10 + "px";
+                star.style.animationDuration = 2 + Math.random() * 4 + "s";
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+
+        // Start experience
+        startBtn.addEventListener("click", () => {
+            // Play music
+            music.volume = 0.5;
+            music.play().catch(e => {
+                console.error("Music play failed:", e);
+                setTimeout(() => music.play().catch(err => console.log("Retry failed")), 500);
+            });
+
+            // Hide gatekeeper
+            gatekeeper.classList.add("hidden");
+
+            // Start auto-play sequence
+            setTimeout(startAutoPlay, 500);
+        });
+
+        function startAutoPlay() {
+            currentIndex = 0;
+            showSection(currentIndex);
+
+            autoPlayInterval = setInterval(() => {
+                currentIndex++;
+                if (currentIndex < sections.length) {
+                    showSection(currentIndex);
+                } else {
+                    clearInterval(autoPlayInterval);
+                    // Stop music when reaching the end
+                    setTimeout(() => {
+                        music.pause();
+                    }, 2000); // Wait 2 seconds before stopping music
+                }
+            }, 3500); // Each section shows for 3.5 seconds
+        }
+
+        function showSection(index) {
+            // Scroll to section
+            sections[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Animate media cards
+            const card = sections[index].querySelector('.media-card');
+            if (card) {
+                setTimeout(() => {
+                    card.classList.add('animate-in');
+
+                    // Play video if exists
+                    const video = card.querySelector('video');
+                    if (video) {
+                        video.play().catch(e => console.log("Video play failed:", e));
+                    }
+                }, 300);
+            }
+
+            // Animate message sections
+            const messageSection = sections[index].querySelector('.message-section');
+            if (messageSection) {
+                setTimeout(() => {
+                    messageSection.classList.add('visible');
+                }, 300);
+            }
+        }
+
+        // Replay button
+        replayBtn.addEventListener("click", () => {
+            // Restart music
+            music.currentTime = 0;
+            music.play().catch(e => console.log("Music replay failed:", e));
+
+            // Reset all media cards
+            const allCards = document.querySelectorAll('.media-card');
+            allCards.forEach(card => {
+                card.classList.remove('animate-in');
+                const video = card.querySelector('video');
+                if (video) {
+                    video.pause();
+                    video.currentTime = 0;
+                }
+            });
+
+            // Reset all message sections
+            messageSections.forEach(section => {
+                section.classList.remove('visible');
+            });
+
+            // Clear existing interval
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+            }
+
+            // Scroll to top and restart
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(startAutoPlay, 1000);
+        });
+    </script>
+</body>
+
+</html>
